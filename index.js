@@ -1,22 +1,25 @@
-var svg = d3.select('body').append('svg')
-    .attr({ 'width': 800, 'height': 800 })
+var svg = d3.select('#container').append('svg')
+    .attr({ 'width': 800, 'height': 800, 'display': 'block', 'margin': 'auto'})
     .append('g')
-    .attr('transform', 'translate(300,300)');
+    .attr('transform', 'translate(400,400)');
 
 var circle = svg.append('g').append('circle').attr({ r: '80px', cx: '0px', cy: '0px', fill: 'red' });
 
 var array, actions, bars;
 
 var barCountInput = document.getElementById('barCount');
-console.log(barCountInput)
+var slider = document.getElementById("myRange");
+
 var n = barCountInput.value;
+var time = 100;
 
 barCountInput.onchange = () => {
     n = barCountInput.value;
     console.log('New n:', n)
 }
 
-var sortType = 1
+
+var sortType = 0
 
 generateBars = () => {
     d3.selectAll('rect').remove();
@@ -56,12 +59,14 @@ function transform(d, i) {
     return 'rotate(' + (i * (360 / n) + 180) + ')';
 }
 
+this.generateBars()
+
 beginAnimation = () => {
     var transition = d3.transition()
-        .duration(20)
+        .duration(time)
         .each('start', function start() {
             let action = actions.pop();
-            console.log(action)
+            //console.log(action)
             switch (action.type) {
                 case 'swap': {
                     bars.attr("class", function (d, i) {
@@ -73,7 +78,6 @@ beginAnimation = () => {
                         barj = bars[0][j];
                     bars[0][i] = barj
                     bars[0][j] = bari
-                    console.log(bars)
                     transition.each(function () { bars.transition().attr('transform', transform) })
                     break;
                 }
@@ -81,6 +85,13 @@ beginAnimation = () => {
             if (actions.length) transition = transition.transition().each('start', start);
             else transition.each('end', function () { bars.attr("class", 'default-rect'); });
         })
+
+    slider.oninput = () => {
+
+        time = slider.value
+        console.log(time)
+        transition.duration(time);
+    }
 }
 
 
