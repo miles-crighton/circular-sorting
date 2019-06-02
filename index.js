@@ -21,10 +21,11 @@ barCountInput.onchange = () => {
 
 var sortType = 0
 
-generateBars = () => {
+queueSort = (type) => {
     d3.selectAll('rect').remove();
     array = d3.shuffle(d3.range(n));
-    switch (sortType) {
+    
+    switch (type) {
         case 0:
             actions = quickSort(array.slice()).reverse();
             break;
@@ -34,7 +35,6 @@ generateBars = () => {
         default:
             actions = quickSort(array.slice()).reverse();
     }
-
 
     let circleRadius = 100,
         chairOriginX = (circleRadius) * Math.sin(0),
@@ -59,56 +59,44 @@ function transform(d, i) {
     return 'rotate(' + (i * (360 / n) + 180) + ')';
 }
 
-this.generateBars()
+this.queueSort()
+
+var blocked = false;
 
 beginAnimation = () => {
-    var transition = d3.transition()
-        .duration(time)
-        .each('start', function start() {
-            let action = actions.pop();
-            //console.log(action)
-            switch (action.type) {
-                case 'swap': {
-                    bars.attr("class", function (d, i) {
-                        return i === action[0] || i === action[1] ? 'active-rect' : 'default-rect'
-                    });
-                    var i = action[0],
-                        j = action[1],
-                        bari = bars[0][i],
-                        barj = bars[0][j];
-                    bars[0][i] = barj
-                    bars[0][j] = bari
-                    transition.each(function () { bars.transition().attr('transform', transform) })
-                    break;
+    if (!blocked) {
+        blocked = true;
+        var transition = d3.transition()
+            .duration(time)
+            .each('start', function start() {
+                let action = actions.pop();
+                //console.log(action)
+                switch (action.type) {
+                    case 'swap': {
+                        bars.attr("class", function (d, i) {
+                            return i === action[0] || i === action[1] ? 'active-rect' : 'default-rect'
+                        });
+                        var i = action[0],
+                            j = action[1],
+                            bari = bars[0][i],
+                            barj = bars[0][j];
+                        bars[0][i] = barj
+                        bars[0][j] = bari
+                        transition.each(function () { bars.transition().attr('transform', transform) })
+                        break;
+                    }
                 }
-            }
-            if (actions.length) transition = transition.transition().each('start', start);
-            else transition.each('end', function () { bars.attr("class", 'default-rect'); });
-        })
+                if (actions.length) transition = transition.transition().each('start', start);
+                else transition.each('end', function () { bars.attr("class", 'default-rect'); blocked = false; });
+            })
 
-    slider.oninput = () => {
-
-        time = slider.value
-        console.log(time)
-        transition.duration(time);
+        slider.oninput = () => {
+            time = slider.value
+            console.log(time)
+            transition.duration(time);
+        }
     }
 }
-
-
-
-d3.selection.prototype.moveToFront = function () {
-    return this.each(function () {
-        this.parentNode.appendChild(this);
-    });
-};
-d3.selection.prototype.moveToBack = function () {
-    return this.each(function () {
-        var firstChild = this.parentNode.firstChild;
-        if (firstChild) {
-            this.parentNode.insertBefore(this, firstChild);
-        }
-    });
-};
 
 
 function quickSort(array) {

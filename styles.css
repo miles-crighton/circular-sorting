@@ -1,0 +1,55 @@
+body {
+    margin: 0;
+    font-family: 'Ubuntu', sans-serif;
+}
+.active-rect{ 
+    fill: red; /*set color to teal*/
+}
+.default-rect{
+    fill: black;
+}
+.pivot-rect{
+    fill: teal;
+}
+.container { 
+    display: flex; 
+    justify-content: center; 
+}
+#topBar { 
+    position: static;
+    display: flex;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    height: 30px;
+    width: 100%;
+    background-color: red;
+    color: white;
+}
+button {
+    background-color: red;
+    color: white;
+    outline: none;
+    border: 1px solid white;;
+}
+button:active {
+    background-color: crimson;
+}
+footer {
+    position: absolute;
+    bottom: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin: auto;
+    width: 100%;
+    text-align: center;
+    background-color: red;
+    color: white;
+
+}
+input {
+    width: 50px;
+}
+label {
+    padding: 5px;
+}
