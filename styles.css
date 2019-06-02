@@ -3,7 +3,7 @@ body {
     font-family: 'Ubuntu', sans-serif;
 }
 .active-rect{ 
-    fill: red; /*set color to teal*/
+    fill: red;
 }
 .default-rect{
     fill: black;
@@ -19,6 +19,7 @@ body {
     position: static;
     display: flex;
     justify-content: center;
+    vertical-align: middle;
     top: 0;
     left: 0;
     height: 30px;

@@ -3,7 +3,7 @@ var svg = d3.select('#container').append('svg')
     .append('g')
     .attr('transform', 'translate(400,400)');
 
-var circle = svg.append('g').append('circle').attr({ r: '80px', cx: '0px', cy: '0px', fill: 'red' });
+var circle = svg.append('g').append('circle').attr({ r: '90px', cx: '0px', cy: '0px', fill: 'red' });
 
 var array, actions, bars;
 
@@ -62,10 +62,13 @@ function transform(d, i) {
 this.queueSort()
 
 var blocked = false;
+var activateButton = document.getElementById('activateButton')
 
+var transition = d3.transition()
 beginAnimation = () => {
     if (!blocked) {
         blocked = true;
+        activateButton.innerText = 'Stop it!'
         var transition = d3.transition()
             .duration(time)
             .each('start', function start() {
@@ -95,6 +98,10 @@ beginAnimation = () => {
             console.log(time)
             transition.duration(time);
         }
+    } else {
+        blocked = false;
+        activateButton.innerText = 'Start it!'
+        d3.select("bars").transition();
     }
 }
 

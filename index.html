@@ -10,17 +10,18 @@
     </head>
     <body>
         <div id='topBar'>
-            <button onClick='beginAnimation()' >Start it!</button>
-            <button onClick='generateBars()'>Generate!</button>
-            <button onClick='quickSort(0)'>Quick Sort</button>
-            <button onClick='bubbleSort(1)'>Bubble Sort</button>
+            <button id='activateButton' onClick='beginAnimation()'>Start it!</button>
+            <select>
+                <option value='quickSort'>Quick Sort</option>
+                <option value='bubbleSort'>Bubble Sort</option>
+            </select>
             <label>n: </label>
             <input type='number' id='barCount' value='70'></input>
             <label>time: </label>
             <input type="range" min="20" max="300" value="100" class="slider" id="myRange">
         </div>
         <div id='container' class='container'></div>
-        <script src="index.js"></script>
+        <script src="scripts.js"></script>
         <footer type='signature'>Made with 🧡 by Miles</footer>
     </body>
 </html>
